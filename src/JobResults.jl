@@ -1,6 +1,6 @@
 module JobResults
 
-export JobResult
+export JobResult, get_mctime_data
 
 using Carlo.ResultTools
 using DataFrames
@@ -30,6 +30,12 @@ function read_meas_file(filepath::String, ys...)
         end
     end
     return DataFrame(ys .=> samples)
+end
+
+function get_mctime_data(result::JobResult, ys...)
+    jobdir = "$(result.jobpath)/$(result.jobname).data"
+    taskdirs = readdir(jobdir, join=true) .* "/run0001.meas.h5"
+    read_meas_file.(taskdirs, ys...)
 end
 
 end
