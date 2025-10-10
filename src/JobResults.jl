@@ -4,6 +4,7 @@ export JobResult
 
 using Carlo.ResultTools
 using DataFrames
+using HDF5
 
 struct JobResult
     jobpath::String     # Path to folder with all job outputs
@@ -19,5 +20,16 @@ function JobResult(jobpath::String, jobname::String)
 end
 
 Base.getindex(result::JobResult, cols) = result.data[:, cols]
+
+function read_meas_file(filepath::String, ys...)
+    samples = []
+    h5open(filepath) do file
+        observables = file["observables"]
+        for y in ys
+            push!(samples, read(observables, "$y/samples"))
+        end
+    end
+    return DataFrame(ys .=> samples)
+end
 
 end
