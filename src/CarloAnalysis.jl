@@ -1,6 +1,6 @@
 module CarloAnalysis
 
-export JobResults
+export JobResult, generate_plot
 
 include("JobResults.jl")
 using .JobResults
