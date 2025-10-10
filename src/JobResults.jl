@@ -1,5 +1,10 @@
 module JobResults
 
+export JobResult
+
+using Carlo.ResultTools
+using DataFrames
+
 struct JobResult
     jobpath::String     # Path to folder with all job outputs
     jobname::String     # Name of job in jobpath

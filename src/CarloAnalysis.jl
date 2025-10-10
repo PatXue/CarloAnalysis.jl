@@ -2,10 +2,9 @@ module CarloAnalysis
 
 export JobResults
 
-using Carlo.ResultTools
-using DataFrames
-
 include("JobResults.jl")
+using .JobResults
 include("Plotting.jl")
+using .Plotting
 
 end
