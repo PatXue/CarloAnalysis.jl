@@ -6,7 +6,17 @@ using CarloAnalysis
 using CairoMakie
 
 function generate_plot(fig::Figure, results::JobResult, x, y;
-                       xlabel, ylabel, title, line=true)
+                       xlabel="", ylabel="", title="", line=true)
+    if xlabel == ""
+        xlabel = "$x"
+    end
+    if ylabel == ""
+        ylabel = "$y"
+    end
+    if title == ""
+        title = "$y vs. $x"
+    end
+
     ax = Axis(fig; title, xlabel, ylabel)
 
     data = results.data
