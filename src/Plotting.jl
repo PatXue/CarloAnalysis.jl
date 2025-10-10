@@ -32,9 +32,9 @@ function generate_plot(fig::Figure, x, y, datasets::Vararg{AbstractDataFrame};
     return ax
 end
 
-function generate_plot(fig::Figure, result::JobResult, x, y;
+function generate_plot(fig::Figure, x, y, results::Vararg{JobResult};
                        xlabel="", ylabel="", title="", line=true)
-    generate_plot(fig, x, y, result.data; xlabel, ylabel, title, line)
+    generate_plot(fig, x, y, getfield.(results, :data)...; xlabel, ylabel, title, line)
 end
 
 end
