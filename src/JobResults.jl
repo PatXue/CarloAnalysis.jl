@@ -14,7 +14,7 @@ end
 function JobResult(jobpath::String, jobname::String)
     JobResult(
         jobpath, jobname,
-        ResultTools.dataframe("$jobpath/$jobname.results.json")
+        DataFrame(ResultTools.dataframe("$jobpath/$jobname.results.json"))
     )
 end
 
