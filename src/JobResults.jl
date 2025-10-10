@@ -18,4 +18,6 @@ function JobResult(jobpath::String, jobname::String)
     )
 end
 
+Base.getindex(result::JobResult, cols) = result.data[:, cols]
+
 end
