@@ -6,7 +6,7 @@ using CarloAnalysis
 using CairoMakie
 
 function generate_plot(fig::Figure, results::JobResult, x, y;
-                       xlabel, ylabel, title)
+                       xlabel, ylabel, title, line=true)
     ax = Axis(fig; title, xlabel, ylabel)
 
     data = results.data
