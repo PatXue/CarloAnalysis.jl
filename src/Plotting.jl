@@ -2,10 +2,8 @@ module Plotting
 
 export generate_plot
 
+using CarloAnalysis
 using CairoMakie
-
-include("JobResults.jl")
-using .JobResults
 
 function generate_plot(fig::Figure, results::JobResult, x, y;
                        xlabel, ylabel, title)
