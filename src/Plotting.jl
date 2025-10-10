@@ -4,8 +4,9 @@ export generate_plot
 
 using CarloAnalysis
 using CairoMakie
+using DataFrames
 
-function generate_plot(fig::Figure, results::JobResult, x, y;
+function generate_plot(fig::Figure, x, y, datasets::Vararg{AbstractDataFrame};
                        xlabel="", ylabel="", title="", line=true)
     if xlabel == ""
         xlabel = "$x"
@@ -18,17 +19,22 @@ function generate_plot(fig::Figure, results::JobResult, x, y;
     end
 
     ax = Axis(fig; title, xlabel, ylabel)
-
-    data = results.data
-    vals = getfield.(data[:, y], :val)
-    errs = getfield.(data[:, y], :err)
-    scatter!(data[:, x], vals)
-    if line
-        lines!(data[:, x], vals)
+    for data in datasets
+        vals = getfield.(data[:, y], :val)
+        errs = getfield.(data[:, y], :err)
+        scatter!(data[:, x], vals)
+        if line
+            lines!(data[:, x], vals)
+        end
+        errorbars!(data[:, x], vals, errs)
     end
-    errorbars!(data[:, x], vals, errs)
 
     return ax
+end
+
+function generate_plot(fig::Figure, result::JobResult, x, y;
+                       xlabel="", ylabel="", title="", line=true)
+    generate_plot(fig, x, y, result.data; xlabel, ylabel, title, line)
 end
 
 end
