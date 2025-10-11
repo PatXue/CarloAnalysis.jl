@@ -1,6 +1,6 @@
 module CarloAnalysis
 
-export JobResult, generate_plot
+export JobResult, generate_plot, get_mctime_data
 
 include("JobResults.jl")
 using .JobResults
