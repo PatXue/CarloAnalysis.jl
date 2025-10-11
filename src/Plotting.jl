@@ -1,40 +1,26 @@
 module Plotting
 
-export generate_plot
+export generate_plot!
 
 using CarloAnalysis
 using CairoMakie
 using DataFrames
 
-function generate_plot(fig::Figure, x, y, datasets::Vararg{AbstractDataFrame};
-                       xlabel="", ylabel="", title="", line=true)
-    if xlabel == ""
-        xlabel = "$x"
-    end
-    if ylabel == ""
-        ylabel = "$y"
-    end
-    if title == ""
-        title = "$y vs. $x"
-    end
-
-    ax = Axis(fig; title, xlabel, ylabel)
+function generate_plot!(ax::Axis, x, y, datasets::Vararg{AbstractDataFrame}; line=true)
     for data in datasets
+        xs = data[:, x]
         vals = getfield.(data[:, y], :val)
         errs = getfield.(data[:, y], :err)
-        scatter!(data[:, x], vals)
+        scatter!(ax, xs, vals)
         if line
-            lines!(data[:, x], vals)
+            lines!(ax, xs, vals)
         end
-        errorbars!(data[:, x], vals, errs)
+        errorbars!(ax, xs, vals, errs)
     end
-
-    return ax
 end
 
-function generate_plot(fig::Figure, x, y, results::Vararg{JobResult};
-                       xlabel="", ylabel="", title="", line=true)
-    generate_plot(fig, x, y, getfield.(results, :data)...; xlabel, ylabel, title, line)
+function generate_plot!(ax::Axis, x, y, results::Vararg{JobResult}; line=true)
+    generate_plot!(ax, x, y, getfield.(results, :data)...; line)
 end
 
 end
