@@ -26,7 +26,7 @@ struct GroupedJobResult
 end
 
 function GroupedJobResult(jobpath::String, jobname::String, cols)
-    data = DataFrame(ResultTools.dataframe("$jobpath/$jobname.results.json")),
+    data = DataFrame(ResultTools.dataframe("$jobpath/$jobname.results.json"))
     GroupedJobResult(
         jobpath, jobname,
         groupby(data, cols)
