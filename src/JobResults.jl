@@ -1,6 +1,6 @@
 module JobResults
 
-export JobResult, get_mctime_data
+export JobResult, GroupedJobResult, get_mctime_data
 
 using Carlo.ResultTools
 using DataFrames
@@ -16,6 +16,20 @@ function JobResult(jobpath::String, jobname::String)
     JobResult(
         jobpath, jobname,
         DataFrame(ResultTools.dataframe("$jobpath/$jobname.results.json"))
+    )
+end
+
+struct GroupedJobResult
+    jobpath::String             # Path to folder with all job outputs
+    jobname::String             # Name of job in jobpath
+    data::GroupedDataFrame      # Parsed data from jobname.results.json
+end
+
+function GroupedJobResult(jobpath::String, jobname::String, cols)
+    data = DataFrame(ResultTools.dataframe("$jobpath/$jobname.results.json")),
+    GroupedJobResult(
+        jobpath, jobname,
+        groupby(data, cols)
     )
 end
 
