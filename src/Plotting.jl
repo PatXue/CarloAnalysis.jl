@@ -31,18 +31,15 @@ function generate_plot!(ax::Axis, x, y, grouped_data::GroupedDataFrame; line=tru
         end
         errorbars!(ax, xs, vals, errs)
     end
+    axislegend(ax)
 end
 
-function generate_plot!(ax::Axis, x, y, data::DataFrame, groups; line=true)
+function generate_plot!(ax::Axis, x, y, groups, data::DataFrame; line=true)
     generate_plot!(ax, x, y, groupby(data, groups); line)
 end
 
 function generate_plot!(ax::Axis, x, y, results::Vararg{JobResult}; line=true)
     generate_plot!(ax, x, y, getfield.(results, :data)...; line)
-end
-
-function generate_plot!(ax::Axis, x, y, result::GroupedJobResult; line=true)
-    generate_plot!(ax, x, y, getfield.(result, :data)...; line)
 end
 
 end
