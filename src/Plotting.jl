@@ -25,7 +25,7 @@ function generate_plot!(ax::Axis, x, y, grouped_data::GroupedDataFrame; line=tru
         xs = data[:, x]
         vals = getfield.(data[:, y], :val)
         errs = getfield.(data[:, y], :err)
-        scatter!(ax, xs, vals, label="$key")
+        scatter!(ax, xs, vals, label="$(NamedTuple(key))")
         if line
             lines!(ax, xs, vals)
         end
