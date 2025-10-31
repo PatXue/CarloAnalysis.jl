@@ -41,7 +41,9 @@ function read_meas_file(filepath::String, ys...)
     h5open(filepath) do file
         observables = file["observables"]
         for y in ys
-            push!(samples, read(observables, "$y/samples"))
+            raw_sample = read(observables, "$y/samples")
+            sample = collect(eachslice(raw_sample, dims=length(size(raw_sample))))
+            push!(samples, sample)
         end
     end
     return DataFrame(ys .=> samples)
