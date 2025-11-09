@@ -31,7 +31,6 @@ function generate_plot!(ax::Axis, x, y, grouped_data::GroupedDataFrame; line=tru
         end
         errorbars!(ax, xs, vals, errs)
     end
-    axislegend(ax)
 end
 
 function generate_plot!(ax::Axis, x, y, groups, data::DataFrame; line=true)
