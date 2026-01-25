@@ -6,17 +6,15 @@ using CarloAnalysis
 using CairoMakie
 using DataFrames
 
-function generate_plot!(ax::Axis, x, y, datasets::Vararg{AbstractDataFrame}; line=true)
-    for data in datasets
-        xs = data[:, x]
-        vals = getfield.(data[:, y], :val)
-        errs = getfield.(data[:, y], :err)
-        scatter!(ax, xs, vals)
-        if line
-            lines!(ax, xs, vals)
-        end
-        errorbars!(ax, xs, vals, errs)
+function generate_plot!(ax::Axis, x, y, data::AbstractDataFrame; line=true, label="")
+    xs = data[:, x]
+    vals = getfield.(data[:, y], :val)
+    errs = getfield.(data[:, y], :err)
+    scatter!(ax, xs, vals; label)
+    if line
+        lines!(ax, xs, vals)
     end
+    errorbars!(ax, xs, vals, errs)
 end
 
 function generate_plot!(ax::Axis, x, y, grouped_data::GroupedDataFrame; line=true)
