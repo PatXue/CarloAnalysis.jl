@@ -6,6 +6,20 @@ using CarloAnalysis
 using CairoMakie
 using DataFrames
 
+function generate_plot!(ax::Axis, xs, ys; dots=true, line=true, errors=true, label="")
+    vals = getfield.(ys, :val)
+    if dots
+        scatter!(ax, xs, vals; label)
+    end
+    if line
+        lines!(ax, xs, vals)
+    end
+    if errors
+        errs = getfield.(ys, :err)
+        errorbars!(ax, xs, vals, errs)
+    end
+end
+
 function generate_plot!(ax::Axis, x, y, data::AbstractDataFrame; line=true, label="")
     xs = data[:, x]
     vals = getfield.(data[:, y], :val)
