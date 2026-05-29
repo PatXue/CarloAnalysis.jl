@@ -7,7 +7,14 @@ using CairoMakie
 using DataFrames
 
 function generate_plot!(ax::Axis, xs, ys; dots=true, line=true, errors=true, label="")
-    vals = getfield.(ys, :val)
+    vals = try
+        getfield.(ys, :val)
+    catch e
+        if isa(e, FieldError)
+            errors = false
+            collect(ys)
+        end
+    end
     if dots
         scatter!(ax, xs, vals; label)
     end
