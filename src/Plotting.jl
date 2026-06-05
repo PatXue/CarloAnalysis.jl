@@ -27,64 +27,24 @@ function generate_plot!(ax::Axis, xs, ys; dots=true, line=true, errors=true, lab
     end
 end
 
-function generate_plot!(ax::Axis, x, y, data::AbstractDataFrame; line=true, label="")
-    xs = data[:, x]
-    vals = getfield.(data[:, y], :val)
-    errs = getfield.(data[:, y], :err)
-    scatter!(ax, xs, vals; label)
-    if line
-        lines!(ax, xs, vals)
-    end
-    errorbars!(ax, xs, vals, errs)
+function generate_plot!(f::Function, ax::Axis, xs, ys; kwargs...)
+    g = v -> f(v...)
+    generate_plot!(ax, xs, g.(eachrow(ys)); kwargs...)
 end
 
-function generate_plot!(f::Function, ax::Axis, x, y, grouped_data::GroupedDataFrame; line=true)
+function generate_plot!(ax::Axis, x, y, data::AbstractDataFrame; kwargs...)
+    generate_plot!(ax, data[:, x], data[:, y]; kwargs...)
+end
+
+function generate_plot!(ax::Axis, x, y, grouped_data::GroupedDataFrame; kwargs...)
     for key in keys(grouped_data)
         data = grouped_data[key]
-        xs = data[:, x]
-        ys = f(data[:, y])
-        vals = getfield.(ys, :val)
-        errs = getfield.(ys, :err)
-        scatter!(ax, xs, vals, label="$(NamedTuple(key))")
-        if line
-            lines!(ax, xs, vals)
-        end
-        errorbars!(ax, xs, vals, errs)
+        generate_plot!(ax, x, y, data; label="$(NamedTuple(key))", kwargs...)
     end
 end
 
-function generate_plot!(ax::Axis, x, y, groups, data::DataFrame; line=true)
-    generate_plot!(ax, x, y, groupby(data, groups); line)
-end
-
-function generate_plot!(ax::Axis, x, y, grouped_data::GroupedDataFrame; line=true)
-    for key in keys(grouped_data)
-        data = grouped_data[key]
-        xs = data[:, x]
-        vals = getfield.(data[:, y], :val)
-        errs = getfield.(data[:, y], :err)
-        scatter!(ax, xs, vals, label="$(NamedTuple(key))")
-        if line
-            lines!(ax, xs, vals)
-        end
-        errorbars!(ax, xs, vals, errs)
-    end
-end
-
-function generate_plot!(f::Function, ax::Axis, x, y, data::AbstractDataFrame; line=true, label="")
-    xs = data[:, x]
-    ys = f(data[:, y])
-    vals = getfield.(ys, :val)
-    errs = getfield.(ys, :err)
-    scatter!(ax, xs, vals; label)
-    if line
-        lines!(ax, xs, vals)
-    end
-    errorbars!(ax, xs, vals, errs)
-end
-
-function generate_plot!(f::Function, ax::Axis, x, y, groups, data::DataFrame; line=true)
-    generate_plot!(f, ax, x, y, groupby(data, groups); line)
+function generate_plot!(ax::Axis, x, y, groups, data::DataFrame; kwargs...)
+    generate_plot!(ax, x, y, groupby(data, groups); kwargs...)
 end
 
 end
