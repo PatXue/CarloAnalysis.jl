@@ -31,10 +31,10 @@ function generate_plot!(ax::Axis, x, y, data::AbstractDataFrame; kwargs...)
     generate_plot!(ax, data[:, x], data[:, y]; kwargs...)
 end
 
-function generate_plot!(ax::Axis, x, y, grouped_data::GroupedDataFrame; kwargs...)
+function generate_plot!(ax::Axis, x, y, grouped_data::GroupedDataFrame; label=identity, kwargs...)
     for key in keys(grouped_data)
         data = grouped_data[key]
-        generate_plot!(ax, x, y, data; label="$(NamedTuple(key))", kwargs...)
+        generate_plot!(ax, x, y, data; label="$(label(NamedTuple(key)))", kwargs...)
     end
 end
 
