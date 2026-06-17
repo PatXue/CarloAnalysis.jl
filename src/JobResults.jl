@@ -43,6 +43,9 @@ function read_meas_file(filepath::String, ys...)
         for y in ys
             raw_sample = read(observables, "$y/samples")
             sample = collect(eachslice(raw_sample, dims=length(size(raw_sample))))
+            if all(x -> length(x) == 1, sample)
+                sample = first.(sample)
+            end
             push!(samples, sample)
         end
     end
